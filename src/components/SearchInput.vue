@@ -16,9 +16,13 @@ const store = useDocumentsStore();
 const search = ref('');
 
 function onSearch() {
-    if (search.value.trim()) {
-        store.searchDocs(search.value);
+    const query = search.value.trim();
+    store.clearResults();
+    if (!query) {
+        return;
     }
+
+    store.searchDocs(query);
 }
 </script>
 

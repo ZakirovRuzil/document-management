@@ -9,9 +9,16 @@ export const useDocumentsStore = defineStore('documents', () => {
     const loading = ref(false);
     const error = ref<string | null>(null);
 
+    function clearResults() {
+        documents.value = [];
+        selectedDoc.value = null;
+        error.value = null;
+    }
+
     async function searchDocs(query: string) {
         loading.value = true;
         error.value = null;
+        clearResults();
         try {
             documents.value = await fetchDocuments(query);
         } catch (e: unknown) {
@@ -29,5 +36,13 @@ export const useDocumentsStore = defineStore('documents', () => {
         selectedDoc.value = doc;
     }
 
-    return { documents, selectedDoc, loading, error, searchDocs, selectDoc };
+    return {
+        documents,
+        selectedDoc,
+        loading,
+        error,
+        searchDocs,
+        selectDoc,
+        clearResults,
+    };
 })

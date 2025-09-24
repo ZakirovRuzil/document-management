@@ -17,18 +17,30 @@
                     </p>
                     <SearchInput />
                 </div>
-                <div class="search-block">
+                <div class="search-block scroll-section">
                     <p class="search-block__title">
                         Результаты
                     </p>
                     <Loader :visible="store.loading" />
-                    <div class="search-block__docs-list">
+
+                    <div
+                        v-if="!store.loading && store.documents.length === 0 && !store.error"
+                        class="search-block__empty"
+                    >
+                        Ничего не найдено
+                    </div>
+
+                    <div
+                        v-else
+                        class="search-block__docs-list"
+                    >
                         <DocumentCard
                             v-for="doc in store.documents"
                             :key="doc.id"
                             :doc="doc"
                         />
                     </div>
+
                     <div
                         v-if="store.error"
                         class="error"
@@ -83,7 +95,6 @@ const store = useDocumentsStore()
     }
 }
 
-
 .dashboard-content {
     display: flex;
     height: 80vh;
@@ -109,12 +120,36 @@ const store = useDocumentsStore()
             font-size: 16px;
             font-weight: 600;
         }
+
+        .search-block__empty {
+            padding: 16px;
+            font-size: 14px;
+            color: map.get(colors.$text-colors, secondary);
+        }
+    }
+
+    .scroll-section {
+        flex: 1;
+        min-height: 0;
     }
 
     .search-block__docs-list {
         display: flex;
         flex-direction: column;
         gap: 18px;
+        padding: 10px;
+        flex: 1;
+
+        min-height: 0;
+        overflow-y: auto;
+
+        scroll-behavior: smooth;
+        scrollbar-width: thin;
+        scrollbar-color: #b8bec6 transparent;
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
     }
 }
 
@@ -124,5 +159,27 @@ const store = useDocumentsStore()
     background-color: map.get(colors.$background-colors, secondary);
     border-radius: 0 10px 10px 0;
     border-left: 1px solid #E0E0E0;
+}
+
+.doc-card {
+    transition: transform .1s ease, background .2s ease;
+
+    &:hover {
+        transform: translateY(-1px);
+        background: #f5f7ff;
+    }
+
+    &.active {
+        background: #1a73e8;
+
+        .doc-card__doc-title,
+        .doc-card__doc-size {
+            color: #fff;
+        }
+    }
+}
+
+.error {
+    color: map.get(colors.$text-colors, danger);
 }
 </style>

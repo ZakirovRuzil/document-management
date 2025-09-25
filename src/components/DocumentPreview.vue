@@ -50,23 +50,25 @@
 </template>
 
 <script setup lang="ts">
-import { useDocumentsStore } from '@/store/documents'
+import { useDocumentsStore } from '@/store/documents';
+import { downloadDocFile } from '@/utils/downloadDoc';
 
-const store = useDocumentsStore()
+const store = useDocumentsStore();
 
 function downloadDoc() {
-    if (!store.selectedDoc) return
-    const blob = new Blob([store.selectedDoc.description], { type: 'text/plain;charset=utf-8' })
-    const link = document.createElement('a')
-    link.href = URL.createObjectURL(blob)
-    link.download = `${store.selectedDoc.name}.txt`
-    link.click()
+    const doc = store.selectedDoc;
+    if (!doc) return;
+    downloadDocFile(doc);
 }
 
 function deleteDoc() {
-    if (!store.selectedDoc) return
-    alert(`Документ ${store.selectedDoc.name} удалён!`)
+    const doc = store.selectedDoc
+    if (!doc) return;
+    // По ТЗ нет чёткого описания удаления, поэтому пока просто убираем из стора
+    store.removeDoc(doc.id);
+    alert(`Документ ${doc.name} удалён!`);
 }
+
 </script>
 
 <style scoped lang="scss">

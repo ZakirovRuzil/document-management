@@ -17,7 +17,6 @@ const search = ref('');
 
 function onSearch() {
     const query = search.value.trim();
-    store.clearResults();
     if (!query) {
         return;
     }

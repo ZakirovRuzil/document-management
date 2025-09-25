@@ -21,31 +21,25 @@
                     <p class="search-block__title">
                         Результаты
                     </p>
-                    <Loader :visible="store.loading" />
 
-                    <div
-                        v-if="!store.loading && store.documents.length === 0 && !store.error"
-                        class="search-block__empty"
-                    >
-                        Ничего не найдено
+                    <div v-if="store.loading">
+                        <Loader />
                     </div>
 
-                    <div
-                        v-else
-                        class="search-block__docs-list"
-                    >
+                    <div v-else-if="store.error" class="error">
+                        {{ store.error }}
+                    </div>
+
+                    <div v-else-if="store.documents.length === 0">
+                        <p class="search-block__empty">Ничего не найдено</p>
+                    </div>
+
+                    <div v-else class="search-block__docs-list">
                         <DocumentCard
                             v-for="doc in store.documents"
                             :key="doc.id"
                             :doc="doc"
                         />
-                    </div>
-
-                    <div
-                        v-if="store.error"
-                        class="error"
-                    >
-                        {{ store.error }}
                     </div>
                 </div>
             </div>
@@ -137,7 +131,7 @@ const store = useDocumentsStore()
         display: flex;
         flex-direction: column;
         gap: 18px;
-        padding: 10px;
+        padding: 10px 10px 0 0;
         flex: 1;
 
         min-height: 0;

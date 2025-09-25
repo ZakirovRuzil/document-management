@@ -17,7 +17,6 @@ export const useDocumentsStore = defineStore('documents', () => {
 
     async function searchDocs(query: string) {
         loading.value = true;
-        error.value = null;
         clearResults();
         try {
             documents.value = await fetchDocuments(query);
@@ -36,6 +35,13 @@ export const useDocumentsStore = defineStore('documents', () => {
         selectedDoc.value = doc;
     }
 
+    function removeDoc(id: number) {
+        documents.value = documents.value.filter(d => d.id !== id);
+        if (selectedDoc.value?.id === id) {
+            selectedDoc.value = null;
+        }
+    }
+
     return {
         documents,
         selectedDoc,
@@ -43,6 +49,6 @@ export const useDocumentsStore = defineStore('documents', () => {
         error,
         searchDocs,
         selectDoc,
-        clearResults,
+        removeDoc,
     };
 })

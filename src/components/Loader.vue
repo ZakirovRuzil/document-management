@@ -1,10 +1,6 @@
 <template>
-    <div v-if="visible" class="loader">Загрузка...</div>
+    <div class="loader">Загрузка...</div>
 </template>
-
-<script setup lang="ts">
-defineProps<{ visible: boolean }>()
-</script>
 
 <style scoped>
 .loader {

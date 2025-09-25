@@ -3,7 +3,7 @@
         <div class="doc-preview__left">
             <div class="doc-preview__media">
                 <img
-                    :src="store.selectedDoc?.image
+                    :src="store.selectedDoc.image
                         ? store.selectedDoc.image
                         : '/docImage.svg'
                     "
@@ -27,7 +27,7 @@
                 <button
                     class="doc-preview__btn doc-preview__btn--delete"
                     @click="deleteDoc"
-                    :disabled="!store.selectedDoc?.image"
+                    :disabled="!store.selectedDoc.image"
                 >
                     Удалить
                 </button>
